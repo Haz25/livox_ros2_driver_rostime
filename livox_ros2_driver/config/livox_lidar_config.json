@@ -1,7 +1,7 @@
 {
     "lidar_config": [
         {
-            "broadcast_code": "0T9DFBC00401611",
+            "broadcast_code": "3JEDM6J00150791",
             "enable_connect": false,
             "enable_fan": true,
             "return_mode": 0,
@@ -10,8 +10,8 @@
             "extrinsic_parameter_source": 0
         },
         {
-            "broadcast_code": "0TFDG3U99101431",
-            "enable_connect": false,
+            "broadcast_code": "3GGDN6700222951",
+            "enable_connect": true,
             "enable_fan": true,
             "return_mode": 0,
             "coordinate": 0,

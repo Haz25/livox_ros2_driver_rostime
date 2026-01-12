@@ -38,9 +38,9 @@
 #include "lds_lidar.h"
 #include "lds_lvx.h"
 
-int64_t time_offset = -115703372; // nanoseconds
+int64_t time_offset = -95703372; // nanoseconds
 int64_t ros_time = 0;
-int64_t last_timestamp = 0;
+int64_t last_livox_time = 0;
 int64_t last_ros_time = 0;
 
 namespace livox_ros {
@@ -369,7 +369,6 @@ uint32_t Lddc::PublishCustomPointcloud(LidarDataQueue *queue,
   // static uint32_t msg_seq = 0;
   uint64_t timestamp = 0;
   uint64_t last_timestamp = 0;
-  int64_t abs_timestamp = 0;
 
   StoragePacket storage_packet;
   LidarDevice *lidar = &lds_->lidars_[handle];
@@ -418,7 +417,7 @@ uint32_t Lddc::PublishCustomPointcloud(LidarDataQueue *queue,
       /** convert to ros time stamp */
       //livox_msg.header.stamp = rclcpp::Time(timestamp);
       livox_msg.header.stamp = rclcpp::Time(ros_time);
-      last_timestamp = timestamp;
+      last_livox_time = timestamp;
       last_ros_time = ros_time;
     } else {
       packet_offset_time = (uint32_t)(timestamp - livox_msg.timebase);
@@ -479,7 +478,6 @@ uint32_t Lddc::PublishCustomPointcloud(LidarDataQueue *queue,
 uint32_t Lddc::PublishImuData(LidarDataQueue *queue, uint32_t packet_num,
                               uint8_t handle) {
   uint64_t timestamp = 0;
-  int64_t abs_timestamp = 0;
   uint32_t published_packet = 0;
 
   sensor_msgs::msg::Imu imu_data;
@@ -493,7 +491,7 @@ uint32_t Lddc::PublishImuData(LidarDataQueue *queue, uint32_t packet_num,
   timestamp = GetStoragePacketTimestamp(&storage_packet, data_source);
   if (timestamp) {
     //imu_data.header.stamp = rclcpp::Time(timestamp);  // to ros time stamp
-    imu_data.header.stamp = rclcpp::Time(timestamp - last_timestamp + last_ros_time);
+    imu_data.header.stamp = rclcpp::Time(timestamp - last_livox_time + last_ros_time);
   }
 
   uint8_t point_buf[2048];
